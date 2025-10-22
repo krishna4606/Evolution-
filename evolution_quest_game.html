@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evolution Quest: The Journey of Life</title>
+  <style>
+    body { font-family: 'Courier New', monospace; background: #1b1b1b; color: #00ff99; text-align: center; padding: 40px; }
+    .card { background: #2b2b2b; border-radius: 10px; padding: 20px; margin: 20px auto; width: 90%; max-width: 600px; }
+    button { background: #00ff99; color: #1b1b1b; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin: 10px; }
+    button:hover { background: #00cc77; }
+    #progress { width: 100%; background: #333; border-radius: 10px; margin: 20px 0; }
+    #bar { width: 0%; height: 20px; background: #00ff99; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <h1>🧬 Evolution Quest 🧬</h1>
+  <p>Level up through the story of life! Each correct answer brings you closer to mastering evolution.</p>
+  <div id="progress"><div id="bar"></div></div>
+  <div class="card" id="game"></div>
+  <script>
+    const questions = [
+      { q: "Who proposed the Theory of Natural Selection?", a: "Charles Darwin" },
+      { q: "Which book did Darwin write?", a: "Origin of Species" },
+      { q: "What was the first life form on Earth?", a: "Prokaryotes" },
+      { q: "Which era is called the Age of Reptiles?", a: "Mesozoic" },
+      { q: "Who gave the theory of inheritance of acquired characters?", a: "Lamarck" }
+    ];
+    let level = parseInt(localStorage.getItem('evoLevel')) || 0;
+    const gameDiv = document.getElementById('game');
+    const bar = document.getElementById('bar');
+    function render() {
+      bar.style.width = (level / questions.length) * 100 + '%';
+      if (level >= questions.length) {
+        gameDiv.innerHTML = `<h2>🎉 You completed Evolution Quest! 🎉</h2>
+                             <p>You’ve mastered evolution like a true biologist!</p>
+                             <button onclick="resetGame()">Restart</button>`;
+        return;
+      }
+      const q = questions[level];
+      gameDiv.innerHTML = `<h2>Level ${level + 1}</h2>
+                           <p>${q.q}</p>
+                           <input id='answer' placeholder='Type your answer here...' style='padding:8px;width:80%;border-radius:5px;border:none;text-align:center'/><br>
+                           <button onclick='check()'>Submit</button>`;
+    }
+    function check() {
+      const ans = document.getElementById('answer').value.trim();
+      if (ans.toLowerCase() === questions[level].a.toLowerCase()) {
+        alert('✅ Correct! You’ve evolved to the next stage.');
+        level++;
+        localStorage.setItem('evoLevel', level);
+      } else {
+        alert('❌ Incorrect! Try again.');
+      }
+      render();
+    }
+    function resetGame() {
+      localStorage.removeItem('evoLevel');
+      level = 0;
+      render();
+    }
+    render();
+  </script>
+</body>
+</html>
